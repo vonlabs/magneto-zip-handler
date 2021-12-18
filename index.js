@@ -52,6 +52,7 @@ async function download_files (list) {
         if(parseInt(name) > lastZipName){
             await downloadFile(URL, './zips/', name)
             await unzipFile ('./zips/', './unzipped/', name);
+            await removeZipFile('./zips/', name);
         }
     }
 }
@@ -84,17 +85,16 @@ async function unzipFile (zipPath, unzipPath, name) {
     });
 };
 
+async function removeZipFile (zipPath, name) {
+    console.log('Removing zip ', name);
+    await fs.unlinkSync(zipPath + name);
+};
+
 async function getLastFiles (zipPath, unzipPath) {
-    let lastZipNameLocal = 0;
     let lastUnzippedNameLocal = 0;
-    fs.readdirSync(zipPath).forEach(file => {
-        if(parseInt(file) > lastZipNameLocal) lastZipNameLocal = parseInt(file);
-    });
     fs.readdirSync(unzipPath).forEach(file => {
         if(parseInt(file) > lastUnzippedNameLocal) lastUnzippedNameLocal = parseInt(file);
     });
-    if (lastZipNameLocal > lastUnzippedNameLocal) lastZipName = lastUnzippedNameLocal;
-    else lastZipName = lastZipNameLocal;
-
+    lastZipName = lastUnzippedNameLocal;
     console.log('Last unzipped file: ', lastZipName)
 };
