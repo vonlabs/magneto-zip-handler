@@ -75,7 +75,7 @@ async function unzipFile (zipPath, unzipPath, name) {
         if (err) throw err;
         jszip.loadAsync(data).then(function (zip) {
            let filenameInZip = name.replace('.zip', '');
-           var dest = unzipPath + filenameInZip;
+           var dest = unzipPath + 'magneto_belsk.txt';
             Object.keys(zip.files).forEach(function(filename) {
                 zip.file(filename).async('nodebuffer').then(function(content) {
                     fs.writeFileSync(dest, content);
