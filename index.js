@@ -20,7 +20,7 @@ async function main (){
             let fileList = await get_filelist();
             fileList = onlyLastOnList(fileList.files);
             if(fileList !== -1) await download_files(fileList);
-            await asyncSleep(1000);
+            await asyncSleep(1000 * 14);
         } catch (error){
             console.log('Error: ', error);
             await asyncSleep(5000);
@@ -108,5 +108,5 @@ async function getLastFiles (zipPath, unzipPath) {
         if(parseInt(file) > lastUnzippedNameLocal) lastUnzippedNameLocal = parseInt(file);
     });
     lastZipName = lastUnzippedNameLocal;
-    console.log('Last unzipped file: ', lastZipName)
+    //console.log('Last unzipped file: ', lastZipName) 
 };
