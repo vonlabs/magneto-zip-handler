@@ -12,17 +12,22 @@ const headers = {
 var lastZipName = 0;
 
 main ();
+
 async function main (){
     await getLastFiles('./zips/', './unzipped/');
     while(true){
-        let fileList = await get_filelist();
-        if(fileList !== -1) await download_files(fileList.files);
-        await asyncSleep(1000 * 30);
+        try{
+            let fileList = await get_filelist();
+            if(fileList !== -1) await download_files(fileList.files);
+            await asyncSleep(1000);
+        } catch (error){
+            console.log('Error: ', error);
+            await asyncSleep(5000);
+        }
     }
 }
     
 const asyncSleep = (milliseconds) => {
-    console.log(`Sleeping for: ${milliseconds/1000}s`)
     return new Promise(resolve => setTimeout(resolve, milliseconds));
 }
 
