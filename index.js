@@ -18,7 +18,8 @@ async function main (){
     while(true){
         try{
             let fileList = await get_filelist();
-            if(fileList !== -1) await download_files(fileList.files);
+            fileList = onlyLastOnList(fileList.files);
+            if(fileList !== -1) await download_files(fileList);
             await asyncSleep(1000);
         } catch (error){
             console.log('Error: ', error);
@@ -51,6 +52,12 @@ async function get_filelist () {
     return parseApache(response);
 }
 
+function onlyLastOnList (list) {
+    let newList = [];
+    newList.push(list[list.length-1]);
+    return newList;
+}
+
 async function download_files (list) {
     for (let i = 0; i < list.length; i++){
         let name = list[i].name;
@@ -77,7 +84,7 @@ async function downloadFile (url, path, name) {
 async function unzipFile (zipPath, unzipPath, name) {
     console.log('Unzipping ', name);
     fs.readFile(zipPath + name, function(err, data) {
-        if (err) throw err;
+        if (err) console.log('Error (unzipping):', err);
         jszip.loadAsync(data).then(function (zip) {
            let filenameInZip = name.replace('.zip', '');
            var dest = unzipPath + 'magneto_belsk.txt';
